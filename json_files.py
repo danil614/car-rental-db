@@ -1,3 +1,5 @@
+# Скрипт для работы с json файлами.
+
 import json
 JSON_FILE_NAME = 'database.json'
 
