@@ -30,6 +30,11 @@ CAR_NAMES = [
 ]
 
 
+# Количество дней для генерации даты
+MIN_DAYS_NUMBER = 30
+MAX_DAYS_NUMBER = 2000
+
+
 def get_name() -> str:
     """
     Возвращает имя и фамилию человека.
@@ -71,11 +76,11 @@ def get_brand_and_model():
     return brand, model
 
 
-def get_random_days():
+def get_random_days(min_days_number: int, max_days_number: int):
     """
     Возвращает случайное количество дней в формате даты.
     """
-    return timedelta(days=randint(30, 2000))
+    return timedelta(days=randint(min_days_number, max_days_number))
 
 
 def get_random_date():
@@ -83,7 +88,7 @@ def get_random_date():
     Возвращает случайную дату.
     """
     current_date = date.today()
-    random_days = get_random_days()
+    random_days = get_random_days(MIN_DAYS_NUMBER, MAX_DAYS_NUMBER)
     return current_date - random_days
 
 
