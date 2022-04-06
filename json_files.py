@@ -22,15 +22,20 @@ def get_data_from_json() -> dict:
     """
     Получает данные из json файла.
     """
-    try:  # Пробуем открыть файл
+    try:  # Пробуем открыть файл и считать json
         json_file = open(JSON_FILE_NAME, 'r', encoding='UTF-8')
-    except IOError:
-        data = {}
-    else:  # Если получилось, считываем из json'а
+
         with json_file:
             data = json.load(json_file)
 
-    return data
+        if isinstance(data, dict):  # Проверяем data на тип dict
+            return data
+        else:
+            return {}
+    except IOError:  # Ошибка открытия файла
+        return {}
+    except json.decoder.JSONDecodeError:  # Ошибка при декодировании json
+        return {}
 
 
 if __name__ == '__main__':

@@ -2,7 +2,6 @@
 
 import datetime
 from random import randint
-from pprint import pprint
 import values  # Скрипт для получения случайных значений полей базы данных
 
 
