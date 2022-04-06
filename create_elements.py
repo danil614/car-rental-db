@@ -19,23 +19,16 @@ MIN_STORIES_NUMBER = 1
 MAX_STORIES_NUMBER = 5
 
 
-# ----------------------------------------------
-def get_last_id():
-    id_number = 0
-    return id_number
-# ----------------------------------------------
-
-
 def create_car(id_number: int, license_plate: str, brand: str, model: str, maintenance_date: datetime) -> dict:
     """
     Создает словарь-автомобиль по входным данным.
     """
     car = {
         'id': id_number,
-        'Гос. номер': license_plate,
+        'Номерной знак': license_plate,
         'Марка': brand,
         'Модель': model,
-        'Дата ТО': maintenance_date
+        'Дата ТО': maintenance_date.isoformat()  # Преобразуем дату в строку
     }
 
     return car
@@ -59,8 +52,8 @@ def create_story(id_number: int, start_date_rent: datetime, end_date_rent: datet
     """
     story = {
         'id': id_number,
-        'Дата начала аренды': start_date_rent,
-        'Дата окончания аренды': end_date_rent
+        'Дата начала аренды': start_date_rent.isoformat(),
+        'Дата окончания аренды': end_date_rent.isoformat()
     }
 
     return story
@@ -132,4 +125,4 @@ def fill_database() -> dict:
 if __name__ == '__main__':
     pass
     # database = fill_database()
-    # pprint(database)
+    # print(database)

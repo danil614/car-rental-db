@@ -1,56 +1,40 @@
 # Вариант 10. Аренда автомобилей.
 
-from create_database import fill_database  # Скрипт для заполнения базы данных случайными значениями
+from create_elements import fill_database  # Скрипт для заполнения базы данных случайными значениями
 import input_data  # Скрипт для ввода данных
 import json_files  # Скрипт для работы с json файлами
 import menu  # Скрипт для вывода сообщений
 
 
-def load_database_from_file():
+def download_database_from_file() -> dict:
     """
-    Загружает базу данных из json файла и проверяет ее.
+    Загружает базу данных из json файла.
     """
-    message = ''
     data = json_files.get_data_from_json()
 
     if len(data) == 0:
         message = 'При загрузке возникла ошибка!\n' \
                   'База данных пустая или файл не найден.'
+    else:
+        message = 'База данных успешно загружена из файла!'
 
     print(message)
-
     return data
 
 
-def check_database_structure(database: dict):
-    messages = []
-    is_correct = True
-
-    if database.get('Автомобили') is None:
-        is_correct = False
-        messages.append('Ключ "Автомобили" не существует')
+def save_database_to_file(database: dict):
+    """
+    Сохраняет базу данных в json файл.
+    """
+    if not json_files.save_json_file(database):
+        message = 'При сохранении базы данных в файл произошла ошибка!'
     else:
-        cars = database['Автомобили']
-
-        if not isinstance(cars, list):
-            is_correct = False
-            messages.append('Значение по ключу "Автомобили" не содержит список')
-
-    if database.get('Водители') is None:
-        is_correct = False
-        messages.append('Ключ "Водители" не существует')
-    else:
-        drivers = database['Водители']
-
-        if not isinstance(drivers, list):
-            is_correct = False
-            messages.append('Значение по ключу "Водители" не содержит список')
-
-    return is_correct, messages
+        message = 'База данных успешно сохранена в файл!'
+    print(message)
 
 
 def main():
-    database = {}
+    database = download_database_from_file()  # Загружаем базу данных из json файла
 
     while True:
         match menu.get_menu_item():
@@ -74,6 +58,7 @@ def main():
                 pass
             case _:
                 print('Неправильно введен номер пункта меню!')
+        save_database_to_file(database)  # Сохраняем базу данных в json файл
 
 
 if __name__ == '__main__':

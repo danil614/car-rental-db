@@ -24,17 +24,20 @@ def get_int_number(message: str, left_border: int) -> int:
 
 
 def get_date(message: str) -> datetime:
+    """
+    Проверяет введенную дату на правильность ввода и выход за границы.
+    """
     date = None
     correct = False
-
-    print(message)
-    year = get_int_number('Введите год', 1)
-    month = get_int_number('Введите месяц', 1)
-    day = get_int_number('Введите день', 1)
+    print('------ ' + message + ' ------')
 
     while not correct:
         try:
-            date = datetime.date(year, month, day)
+            year = get_int_number('Введите год', 1)
+            month = get_int_number('Введите месяц', 1)
+            day = get_int_number('Введите день', 1)
+
+            date = datetime.date(year, month, day)  # Преобразуем в формат даты
             correct = True
         except ValueError:
             print('Неправильно введена дата! Введите ее еще раз')
