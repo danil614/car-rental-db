@@ -11,7 +11,7 @@ def get_menu_item() -> int:
     """
     menu_text = '\n~~~~~~~~~~~~~~~~~~~~~~~~~~ МЕНЮ ~~~~~~~~~~~~~~~~~~~~~~~~~~\n' \
                 '1. Сформировать новую базу данных\n' \
-                '2. Печать базы данных\n'\
+                '2. Печать базы данных\n' \
                 '3. Печать автомобилей\n' \
                 '4. \n' \
                 '5. \n' \
@@ -60,6 +60,7 @@ def print_cars(cars: list):
     """
     Печатает строки для таблицы автомобилей.
     """
+    print()
     length_title = print_cars_title()  # Печатаем заголовок таблицы
     for number, car in enumerate(cars):
         try:  # Пробуем получить данные автомобиля
@@ -73,3 +74,12 @@ def print_cars(cars: list):
             car_string = f'{number + 1:^4}|' \
                          f'{car_string:^{length_title - 5}}'
         print(car_string)  # Печатаем строку таблицы с данными автомобиля
+
+
+def get_car_index(cars: list) -> int:
+    """
+    Выводит список автомобилей и возвращает выбранный автомобиль.
+    """
+    print_cars(cars)
+    index_car = input_data.get_int_number('\nВыберите номер автомобиля', 1, len(cars))
+    return index_car

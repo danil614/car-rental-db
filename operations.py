@@ -3,6 +3,7 @@
 import create_elements  # Скрипт для заполнения базы данных
 import input_data  # Скрипт для ввода данных
 from keys import CAR, DRIVER, STORY, CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
+import menu  # Скрипт для вывода сообщений
 
 
 def get_last_id(cars: list) -> int:
@@ -20,6 +21,20 @@ def get_last_id(cars: list) -> int:
         id_number = -1
 
     return id_number
+
+
+def get_car_id(cars: list, index: int):
+    """
+    Возвращает id номер по индексу в списке автомобилей.
+    """
+    try:
+        car = cars[index]
+        car_id = car[CAR.ID]
+    except IndexError:  # Выход за границы списка
+        car_id = 0
+    except KeyError:  # Не найден ключ id
+        car_id = 0
+    return car_id
 
 
 def add_car(cars: list) -> dict:
@@ -49,14 +64,20 @@ def add_driver(drivers: list) -> dict:
     return driver
 
 
-def add_story(stories: list) -> dict:
+def add_story(cars: list, stories: list) -> dict:
     """
     Добавляет новую историю в список историй водителя.
     """
+    # Просим пользователя выбрать автомобиль для добавления истории
+    car_index = menu.get_car_index(cars)
+
+    # Получаем и проверяем дату аренды
+    start_date_rent, end_date_rent = input_data.get_and_check_date_rent()  # ----------------------------------
+
     story = create_elements.create_story(
-        id_number=0,  # ---------------------------------------------------------
-        start_date_rent=input_data.get_date('Введите дату начала аренды'),
-        end_date_rent=input_data.get_date('Введите дату окончания аренды')
+        id_number=get_car_id(cars, car_index),  # Получаем id по индексу списка
+        start_date_rent=start_date_rent,
+        end_date_rent=end_date_rent
     )
     stories.append(story)  # Добавляем в список историй
     return story
@@ -64,4 +85,5 @@ def add_story(stories: list) -> dict:
 
 if __name__ == '__main__':
     # print(add_car([{'id': 111}]))
-    print(add_driver([]))
+    # print(add_driver([]))
+    print(add_story(create_elements.get_random_cars(10), []))

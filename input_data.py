@@ -1,9 +1,10 @@
 # Скрипт для проверки входных данных.
 
 import datetime
+import sys
 
 
-def get_int_number(message: str, left_border: int) -> int:
+def get_int_number(message: str, left_border: int, right_border: int = sys.maxsize) -> int:
     """
     Проверяет введенное число int на правильность ввода и выход за границы.
     """
@@ -13,7 +14,7 @@ def get_int_number(message: str, left_border: int) -> int:
     while not correct:
         try:  # проверяем корректно ли введено число int
             number = int(input(message + ': '))
-            if number >= left_border:  # проверяем выходит ли число за пределы значений
+            if right_border >= number >= left_border:  # проверяем выходит ли число за пределы значений
                 correct = True
             else:
                 print('Число выходит за пределы допустимых значений! Введите его еще раз')
@@ -27,7 +28,7 @@ def get_date(message: str) -> datetime:
     """
     Проверяет введенную дату на правильность ввода и выход за границы.
     """
-    date = None
+    date = datetime.date.min
     correct = False
     print('------ ' + message + ' ------')
 
@@ -43,3 +44,17 @@ def get_date(message: str) -> datetime:
             print('Неправильно введена дата! Введите ее еще раз')
 
     return date
+
+
+def get_and_check_date_rent():
+    start_date_rent = datetime.date.min
+    end_date_rent = datetime.date.min
+    correct = False
+
+    while not correct:
+        start_date_rent = get_date('Введите дату начала аренды'),
+        end_date_rent = get_date('Введите дату окончания аренды')
+        correct = True
+        # correct = start_date_rent <= end_date_rent --------------------------------------------
+
+    return start_date_rent, end_date_rent

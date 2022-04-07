@@ -6,6 +6,7 @@ import json_files  # Скрипт для работы с json файлами
 import menu  # Скрипт для вывода сообщений
 from keys import CAR, DRIVER, STORY, CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
 
+
 def download_database_from_file() -> dict:
     """
     Загружает базу данных из json файла.
@@ -74,4 +75,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
