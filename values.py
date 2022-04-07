@@ -44,6 +44,7 @@ def get_name() -> str:
     if randint(0, 1) == 0:
         name += ' ' + choice(MALE_NAMES)
     else:
+        # Для женских имен будем добавлять букву "а" к фамилии
         name += 'а ' + choice(FEMALE_NAMES)
 
     return name
@@ -89,6 +90,7 @@ def get_random_date():
     """
     current_date = date.today()
     random_days = get_random_days(MIN_DAYS_NUMBER, MAX_DAYS_NUMBER)
+    # Вычитаем из текущей даты случайное количество дней
     return current_date - random_days
 
 

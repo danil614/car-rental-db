@@ -1,10 +1,10 @@
 # Вариант 10. Аренда автомобилей.
-
+import create_elements
 from create_elements import fill_database  # Скрипт для заполнения базы данных случайными значениями
 import input_data  # Скрипт для ввода данных
 import json_files  # Скрипт для работы с json файлами
 import menu  # Скрипт для вывода сообщений
-
+from keys import CAR, DRIVER, STORY, CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
 
 def download_database_from_file() -> dict:
     """
@@ -27,10 +27,20 @@ def save_database_to_file(database: dict):
     Сохраняет базу данных в json файл.
     """
     if not json_files.save_json_file(database):
-        message = 'При сохранении базы данных в файл произошла ошибка!'
+        message = '\nПри сохранении базы данных в файл произошла ошибка!'
     else:
-        message = 'База данных успешно сохранена в файл!'
+        message = '\nБаза данных успешно сохранена в файл!'
     print(message)
+
+
+def get_list_by_key(dictionary: dict, key: str) -> list:
+    """
+    Получает список из словаря по ключу.
+    """
+    try:
+        return dictionary[key]
+    except KeyError:
+        return []
 
 
 def main():
@@ -44,8 +54,9 @@ def main():
                 database = fill_database()
             case 2:  # Печать базы данных
                 menu.print_database(database)
-            case 3:  #
-                pass
+            case 3:  # Печать автомобилей
+                cars = get_list_by_key(database, CARS)  # Получаем список автомобилей
+                menu.print_cars(cars)
             case 4:  #
                 pass
             case 5:  #
@@ -63,3 +74,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
