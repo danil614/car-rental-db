@@ -47,14 +47,16 @@ def get_date(message: str) -> datetime:
 
 
 def get_and_check_date_rent():
-    start_date_rent = datetime.date.min
-    end_date_rent = datetime.date.min
+    """
+    Запрашивает даты, и проверяет, что дата начала меньше даты конца.
+    """
+    start_date_rent = datetime.date.min  # Дата начала аренды
+    end_date_rent = datetime.date.min  # Дата конца аренды
     correct = False
 
     while not correct:
-        start_date_rent = get_date('Введите дату начала аренды'),
+        start_date_rent = get_date('Введите дату начала аренды')
         end_date_rent = get_date('Введите дату окончания аренды')
-        correct = True
-        # correct = start_date_rent <= end_date_rent --------------------------------------------
+        correct = start_date_rent <= end_date_rent
 
     return start_date_rent, end_date_rent

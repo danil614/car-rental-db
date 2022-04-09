@@ -4,6 +4,7 @@ import create_elements  # Скрипт для заполнения базы да
 import input_data  # Скрипт для ввода данных
 from keys import CAR, DRIVER, STORY, CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
 import menu  # Скрипт для вывода сообщений
+import datetime
 
 
 def get_last_id(cars: list) -> int:
@@ -72,10 +73,10 @@ def add_story(cars: list, stories: list) -> dict:
     car_index = menu.get_car_index(cars)
 
     # Получаем и проверяем дату аренды
-    start_date_rent, end_date_rent = input_data.get_and_check_date_rent()  # ----------------------------------
+    start_date_rent, end_date_rent = input_data.get_and_check_date_rent()
 
     story = create_elements.create_story(
-        id_number=get_car_id(cars, car_index),  # Получаем id по индексу списка
+        id_number=get_car_id(cars, car_index - 1),  # Получаем id по индексу списка
         start_date_rent=start_date_rent,
         end_date_rent=end_date_rent
     )
@@ -84,6 +85,7 @@ def add_story(cars: list, stories: list) -> dict:
 
 
 if __name__ == '__main__':
+    pass
     # print(add_car([{'id': 111}]))
     # print(add_driver([]))
-    print(add_story(create_elements.get_random_cars(10), []))
+    # print(add_story(create_elements.get_random_cars(10), []))
