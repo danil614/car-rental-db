@@ -5,37 +5,7 @@ import input_data  # Скрипт для ввода данных
 from keys import CAR, DRIVER, STORY, CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
 import menu  # Скрипт для вывода сообщений
 import datetime
-
-
-def get_last_id(cars: list) -> int:
-    """
-    Возвращает последний id номер в списке автомобилей.
-    """
-    try:
-        max_item = max(cars, key=lambda item: item[CAR.ID])  # Получаем элемент с максимальным id
-        id_number = max_item[CAR.ID]  # Получаем максимальный id
-    except ValueError:  # Пустой список
-        id_number = -1
-    except TypeError:  # В списке нет словаря
-        id_number = -1
-    except KeyError:  # Нет ключа в списке
-        id_number = -1
-
-    return id_number
-
-
-def get_car_id(cars: list, index: int) -> int:
-    """
-    Возвращает id номер по индексу в списке автомобилей.
-    """
-    try:
-        car = cars[index]
-        id_car = car[CAR.ID]
-    except IndexError:  # Выход за границы списка
-        id_car = -1
-    except KeyError:  # Не найден ключ id
-        id_car = -1
-    return id_car
+import get_elements  # Скрипт для получения элементов из базы данных
 
 
 # ////////////////////////////////////////////// Добавление в базу данных //////////////////////////////////////////////
@@ -44,7 +14,7 @@ def add_car(cars: list) -> dict:
     Добавляет новый автомобиль в список автомобилей.
     """
     car = create_elements.create_car(
-        id_number=get_last_id(cars) + 1,  # Получаем последний номер id, и берем следующий
+        id_number=get_elements.get_last_id(cars) + 1,  # Получаем последний номер id, и берем следующий
         license_plate=input('Введите номерной знак: '),
         brand=input('Введите марку: '),
         model=input('Введите модель: '),
@@ -77,7 +47,7 @@ def add_story(cars: list, stories: list) -> dict:
     start_date_rent, end_date_rent = input_data.get_and_check_date_rent()
 
     story = create_elements.create_story(
-        id_number=get_car_id(cars, car_index),  # Получаем id по индексу списка
+        id_number=get_elements.get_car_id(cars, car_index),  # Получаем id по индексу списка
         start_date_rent=start_date_rent,
         end_date_rent=end_date_rent
     )

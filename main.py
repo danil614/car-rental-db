@@ -6,7 +6,9 @@ import input_data  # Скрипт для ввода данных
 import json_files  # Скрипт для работы с json файлами
 import menu  # Скрипт для вывода сообщений
 from keys import CAR, DRIVER, STORY, CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
-
+from pprint import pprint
+import get_elements  # Скрипт для получения элементов из базы данных
+import check_structure
 
 def download_database_from_file() -> dict:
     """
@@ -35,47 +37,11 @@ def save_database_to_file(database: dict):
     print(message)
 
 
-def get_list_by_key(dictionary: dict, key: str) -> list:
-    """
-    Получает список из словаря по ключу.
-    """
-    try:
-        input_list = dictionary[key]  # Получаем список по ключу
-        if not isinstance(input_list, list):  # Проверяем на тип list
-            raise ValueError
-    except (KeyError, ValueError):
-        # При ошибках перезаписываем пустой список
-        input_list = rewrite_list_by_key(dictionary, key)
-
-    return input_list
-
-
-def rewrite_list_by_key(dictionary: dict, key: str) -> list:
-    """
-    Перезаписывает список в словарь по ключу.
-    Если в базе данных были ошибки, то происходит перезапись.
-    """
-    dictionary[key] = []  # Записываем пустой список по ключу
-    return dictionary[key]
-
-
-def get_stories(drivers: list):
-    """
-    Получает список историй по водителю.
-    """
-    # Просим пользователя выбрать водителя
-    index_driver = menu.get_driver_index(drivers)
-    try:
-        driver = drivers[index_driver]
-    except IndexError:
-        driver = {}
-    return get_list_by_key(driver, DRIVER.STORIES)
-
-
 def main():
     database = download_database_from_file()  # Загружаем базу данных из json файла
-    cars = get_list_by_key(database, CARS)  # Получаем список автомобилей
-    drivers = get_list_by_key(database, DRIVERS)  # Получаем список водителей
+    # cars = get_elements.get_list_by_key(database, CARS)  # Получаем список автомобилей
+    # drivers = get_elements.get_list_by_key(database, DRIVERS)  # Получаем список водителей
+    cars, drivers = check_structure.main(database)
 
     while True:
         match menu.get_menu_item():
@@ -83,16 +49,27 @@ def main():
                 break
             case 1:  # Сформировать новую базу данных
                 database = fill_database()
-                cars = get_list_by_key(database, CARS)  # Получаем список автомобилей
-                drivers = get_list_by_key(database, DRIVERS)  # Получаем список водителей
+                cars = check_structure.get_list_by_key(database, CARS)  # Получаем список автомобилей
+                drivers = check_structure.get_list_by_key(database, DRIVERS)  # Получаем список водителей
             case 2:  # Печать автомобилей
                 menu.print_cars(cars)
             case 3:  # Печать водителей
                 menu.print_drivers(drivers)
-            case 4:  #
-                pass
-            case 5:  #
-                pass
+            case 4:  # Печать историй по автомобилю
+                if not menu.is_list_empty(cars, CARS):
+                    index = menu.get_car_index(cars)  # Спрашиваем у пользователя индекс автомобиля
+                    car = cars[index]  # Получаем автомобиль по индексу
+
+                    id_car = get_elements.get_car_id(cars, index)  # Получаем id автомобиля по индексу
+                    stories = get_elements.get_stories_by_car_id(drivers, id_car)  # Получаем истории по автомобилю
+
+                    menu.print_stories_by_car(index, car, stories)  # Выводим все истории автомобиля
+            case 5:  # Печать историй по водителю
+                if not menu.is_list_empty(drivers, DRIVERS):
+                    index = menu.get_driver_index(drivers)  # Спрашиваем у пользователя индекс водителя
+                    driver = drivers[index]  # Получаем водителя по индексу
+                    stories = get_elements.get_stories_by_driver_index(drivers, index)  # Получаем истории по водителю
+                    menu.print_stories_by_driver(index, driver, stories)  # Выводим все истории водителя
             case 6:  # Добавить автомобиль
                 operations.add_car(cars)
                 menu.print_cars(cars)
@@ -101,7 +78,8 @@ def main():
                 menu.print_drivers(drivers)
             case 8:  # Добавить историю
                 if not (menu.is_list_empty(cars, CARS) or menu.is_list_empty(drivers, DRIVERS)):  # ---------
-                    stories = get_stories(drivers)  # Получаем истории по водителю
+                    index = menu.get_driver_index(drivers)  # Просим пользователя выбрать водителя
+                    stories = get_elements.get_stories_by_driver_index(drivers, index)  # Получаем истории по водителю
                     operations.add_story(cars, stories)
                     # Печать историй по водителю ------------------------------------------------------------
             case _:
