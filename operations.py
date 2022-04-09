@@ -24,20 +24,21 @@ def get_last_id(cars: list) -> int:
     return id_number
 
 
-def get_car_id(cars: list, index: int):
+def get_car_id(cars: list, index: int) -> int:
     """
     Возвращает id номер по индексу в списке автомобилей.
     """
     try:
         car = cars[index]
-        car_id = car[CAR.ID]
+        id_car = car[CAR.ID]
     except IndexError:  # Выход за границы списка
-        car_id = 0
+        id_car = -1
     except KeyError:  # Не найден ключ id
-        car_id = 0
-    return car_id
+        id_car = -1
+    return id_car
 
 
+# ////////////////////////////////////////////// Добавление в базу данных //////////////////////////////////////////////
 def add_car(cars: list) -> dict:
     """
     Добавляет новый автомобиль в список автомобилей.
@@ -82,6 +83,7 @@ def add_story(cars: list, stories: list) -> dict:
     )
     stories.append(story)  # Добавляем в список историй
     return story
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 if __name__ == '__main__':
