@@ -57,6 +57,11 @@ def get_and_check_date_rent():
     while not correct:
         start_date_rent = get_date('Введите дату начала аренды')
         end_date_rent = get_date('Введите дату окончания аренды')
-        correct = start_date_rent <= end_date_rent
+
+        if start_date_rent > end_date_rent:  # Проверка дат
+            correct = False
+            print('Дата начала больше чем дата конца! Введите даты еще раз')
+        else:
+            correct = True
 
     return start_date_rent, end_date_rent

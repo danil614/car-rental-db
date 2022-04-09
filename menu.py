@@ -81,5 +81,5 @@ def get_car_index(cars: list) -> int:
     Выводит список автомобилей и возвращает выбранный автомобиль.
     """
     print_cars(cars)
-    index_car = input_data.get_int_number('\nВыберите номер автомобиля', 1, len(cars))
+    index_car = input_data.get_int_number('\nВыберите номер автомобиля', 1, len(cars)) - 1
     return index_car

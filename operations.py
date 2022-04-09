@@ -76,7 +76,7 @@ def add_story(cars: list, stories: list) -> dict:
     start_date_rent, end_date_rent = input_data.get_and_check_date_rent()
 
     story = create_elements.create_story(
-        id_number=get_car_id(cars, car_index - 1),  # Получаем id по индексу списка
+        id_number=get_car_id(cars, car_index),  # Получаем id по индексу списка
         start_date_rent=start_date_rent,
         end_date_rent=end_date_rent
     )
