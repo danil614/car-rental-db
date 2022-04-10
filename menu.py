@@ -1,8 +1,8 @@
 # Скрипт для вывода сообщений пользователю.
 
-from pprint import pprint
+import get_elements
 import input_data  # Скрипт для ввода данных
-from keys import CAR, DRIVER, STORY, CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
+from keys import CAR, DRIVER, STORY  # Скрипт, в котором хранятся строковые ключи
 
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ def print_separator(title: str):
 
 
 # ///////////////////////////////////////////////// Печать автомобилей /////////////////////////////////////////////////
-def print_cars_title() -> int:
+def print_cars_title():
     """
     Печатает заголовок таблицы автомобилей.
     """
@@ -72,38 +72,32 @@ def print_cars_title() -> int:
     print()
     print(title)
     print_separator(title)
-    return len(title)
 
 
-def print_car(index: int, car: dict, length_title: int):
+def print_car(index: int, car: dict):
     """
     Печатает строку таблицы автомобилей.
     """
-    try:  # Пробуем получить данные автомобиля
-        car_string = f'{index + 1:^4}|' \
-                     f'{car[CAR.LICENSE_PLATE]:^16}|' \
-                     f' {car[CAR.BRAND]:<12}|' \
-                     f' {car[CAR.MODEL]:<12}|' \
-                     f'{car[CAR.MAINTENANCE_DATE]:^14}'
-    except (KeyError, TypeError):  # Отлавливаем ошибку, если ключа нет или элемент не словарь
-        car_string = 'ошибка чтения строки из базы данных'
-        car_string = f'{index + 1:^4}|' \
-                     f'{car_string:^{length_title - 5}}'
+    car_string = f'{index + 1:^4}|' \
+                 f'{car[CAR.LICENSE_PLATE]:^16}|' \
+                 f' {car[CAR.BRAND]:<12}|' \
+                 f' {car[CAR.MODEL]:<12}|' \
+                 f'{car[CAR.MAINTENANCE_DATE]:^14}'
     print(car_string)  # Печатаем строку таблицы с данными автомобиля
 
 
 def print_cars(cars: list):
     """
-    Печатает строки для таблицы автомобилей.
+    Печатает таблицу автомобилей.
     """
-    length_title = print_cars_title()  # Печатаем заголовок таблицы
+    print_cars_title()  # Печатаем заголовок таблицы
     for index, car in enumerate(cars):
-        print_car(index, car, length_title)  # Выводим строку таблицы
+        print_car(index, car)  # Выводим строку таблицы
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 # ////////////////////////////////////////////////// Печать водителей //////////////////////////////////////////////////
-def print_drivers_title() -> int:
+def print_drivers_title():
     """
     Печатает заголовок таблицы водителей.
     """
@@ -113,36 +107,30 @@ def print_drivers_title() -> int:
     print()
     print(title)
     print_separator(title)
-    return len(title)
 
 
-def print_driver(index: int, driver: dict, length_title: int):
+def print_driver(index: int, driver: dict):
     """
     Печатает строку таблицы водителей.
     """
-    try:  # Пробуем получить данные водителя
-        driver_string = f'{index + 1:^4}|' \
-                        f' {driver[DRIVER.NAME]:<24}|' \
-                        f' {len(driver[DRIVER.STORIES]):<20}|'  # Количество историй
-    except (KeyError, TypeError):  # Отлавливаем ошибку, если ключа нет, или нет длины историй, или элемент не словарь
-        driver_string = 'ошибка чтения строки из базы данных'
-        driver_string = f'{index + 1:^4}|' \
-                        f'{driver_string:^{length_title - 5}}'
+    driver_string = f'{index + 1:^4}|' \
+                    f' {driver[DRIVER.NAME]:<24}|' \
+                    f' {len(driver[DRIVER.STORIES]):<20}|'  # Количество историй
     print(driver_string)  # Печатаем строку таблицы с данными водителя
 
 
 def print_drivers(drivers: list):
     """
-    Печатает строки для таблицы водителей.
+    Печатает таблицу водителей.
     """
-    length_title = print_drivers_title()  # Печатаем заголовок таблицы
+    print_drivers_title()  # Печатаем заголовок таблицы
     for index, driver in enumerate(drivers):
-        print_driver(index, driver, length_title)  # Выводим строку таблицы
+        print_driver(index, driver)  # Выводим строку таблицы
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 # /////////////////////////////////////////////////// Печать историй ///////////////////////////////////////////////////
-def print_stories_title() -> int:
+def print_stories_title():
     """
     Печатает заголовок таблицы историй.
     """
@@ -152,21 +140,15 @@ def print_stories_title() -> int:
     print()
     print(title)
     print_separator(title)
-    return len(title)
 
 
-def print_story(index: int, story: dict, length_title: int):
+def print_story(index: int, story: dict):
     """
     Печатает строку таблицы историй.
     """
-    try:  # Пробуем получить данные истории
-        story_string = f'{index + 1:^4}|' \
-                       f'{story[STORY.START_DATE_RENT]:^26}|' \
-                       f'{story[STORY.END_DATE_RENT]:^26}'
-    except (KeyError, TypeError):  # Отлавливаем ошибку, если ключа нет или элемент не словарь
-        story_string = 'ошибка чтения строки из базы данных'
-        story_string = f'{index + 1:^4}|' \
-                       f'{story_string:^{length_title - 5}}'
+    story_string = f'{index + 1:^4}|' \
+                   f'{story[STORY.START_DATE_RENT]:^26}|' \
+                   f'{story[STORY.END_DATE_RENT]:^26}'
     print(story_string)  # Печатаем строку таблицы с данными истории
 
 
@@ -174,28 +156,35 @@ def print_stories(stories: list):
     """
     Печатает строки для таблицы историй.
     """
-    # if is_list_empty(stories, DRIVER.STORIES):  # Проверяем на пустоту ------------------------------------
-    #     return
-
-    length_title = print_stories_title()  # Печатаем заголовок таблицы историй
+    print_stories_title()  # Печатаем заголовок таблицы историй
     for index, story in enumerate(stories):
-        print_story(index, story, length_title)  # Выводим строку таблицы
+        print_story(index, story)  # Выводим строку таблицы
 
 
-def print_stories_by_car(index: int, car: dict, stories: list):
+def print_stories_by_cars(cars: list, drivers: list):
     """
-    Печатает строки для таблицы историй по автомобилю.
+    Печатает таблицу автомобилей с историями.
     """
-    length_cars_title = print_cars_title()
-    print_car(index, car, length_cars_title)
-    print_stories(stories)
+    print_cars_title()  # Печатаем заголовок таблицы
+    for index, car in enumerate(cars):
+        print_car(index, car)  # Выводим строку с данными автомобиля
+
+        # Выводим истории по автомобилю
+        print_stories(
+            stories=get_elements.get_stories_by_car(drivers, car)
+        )
 
 
-def print_stories_by_driver(index: int, driver: dict, stories: list):
+def print_stories_by_drivers(drivers: list):
     """
-    Печатает строки для таблицы историй по водителю.
+    Печатает таблицу водителей с историями.
     """
-    length_drivers_title = print_drivers_title()
-    print_driver(index, driver, length_drivers_title)
-    print_stories(stories)
+    print_drivers_title()  # Печатаем заголовок таблицы
+    for index, driver in enumerate(drivers):
+        print_driver(index, driver)  # Выводим строку с данными водителя
+
+        # Выводим истории по водителю
+        print_stories(
+            stories=driver[DRIVER.STORIES]
+        )
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

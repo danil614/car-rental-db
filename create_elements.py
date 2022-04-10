@@ -137,9 +137,3 @@ def fill_database() -> dict:
     car_rental = {CARS: cars, DRIVERS: drivers}
     return car_rental
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-if __name__ == '__main__':
-    pass
-    # database = fill_database()
-    # print(database)
