@@ -92,11 +92,3 @@ def get_random_date():
     random_days = get_random_days(MIN_DAYS_NUMBER, MAX_DAYS_NUMBER)
     # Вычитаем из текущей даты случайное количество дней
     return current_date - random_days
-
-
-if __name__ == '__main__':
-    pass
-    # print(get_random_date())
-    # print(get_brand_and_model())
-    # print(get_license_plate())
-    # print(get_name())
