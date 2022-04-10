@@ -111,8 +111,6 @@ def get_operation(menu_item: int):
     :return: Текстовая операция.
     """
     match menu_item:
-        case 1:  # Сформировать новую базу данных
-            return None
         case 6:  # Добавить автомобиль
             return OPERATIONS.ADD
         case 7:  # Добавить водителя
