@@ -52,18 +52,19 @@ def add_story(cars: list, drivers: list):
             message='Введите номер автомобиля для добавления истории'
         )
 
-        # Получаем и проверяем даты аренды
-        start_date_rent, end_date_rent = input_data.get_and_check_date_rent()
-        story = create_elements.create_story(
-            id_number=car[CAR.ID],  # Получаем id автомобиля
-            start_date_rent=start_date_rent,
-            end_date_rent=end_date_rent
-        )
+        if car is not None:  # Если список автомобилей не пустой
+            # Получаем и проверяем даты аренды
+            start_date_rent, end_date_rent = input_data.get_and_check_date_rent()
+            story = create_elements.create_story(
+                id_number=car[CAR.ID],  # Получаем id автомобиля
+                start_date_rent=start_date_rent,
+                end_date_rent=end_date_rent
+            )
 
-        stories = driver[DRIVER.STORIES]  # Получаем истории водителя
-        stories.append(story)  # Добавляем в список историй
-        index_driver = drivers.index(driver)  # Получаем индекс водителя
-        menu.print_stories_by_driver(cars, index_driver, driver)  # Выводим список историй
+            stories = driver[DRIVER.STORIES]  # Получаем истории водителя
+            stories.append(story)  # Добавляем в список историй
+            index_driver = drivers.index(driver)  # Получаем индекс водителя
+            menu.print_stories_by_driver(cars, index_driver, driver)  # Выводим список историй
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -83,7 +84,7 @@ def edit_car(cars: list):
         car[CAR.LICENSE_PLATE] = input('Введите номерной знак: ')
         car[CAR.BRAND] = input('Введите марку: ')
         car[CAR.MODEL] = input('Введите модель: ')
-        car[CAR.MAINTENANCE_DATE] = input_data.get_date('Введите дату ТО')
+        car[CAR.MAINTENANCE_DATE] = input_data.get_date('Введите дату ТО').isoformat()  # Преобразуем дату в строку
         menu.print_cars(cars)  # Выводим автомобили
 
 
@@ -124,8 +125,8 @@ def edit_story(cars: list, drivers: list):
         if story is not None:  # Если список историй не пустой
             # Получаем и проверяем даты аренды
             start_date_rent, end_date_rent = input_data.get_and_check_date_rent()
-            story[STORY.START_DATE_RENT] = start_date_rent
-            story[STORY.END_DATE_RENT] = end_date_rent
+            story[STORY.START_DATE_RENT] = start_date_rent.isoformat()  # Преобразуем дату в строку
+            story[STORY.END_DATE_RENT] = end_date_rent.isoformat()  # Преобразуем дату в строку
 
             index_driver = drivers.index(driver)  # Получаем индекс водителя
             menu.print_stories_by_driver(cars, index_driver, driver)  # Выводим список историй

@@ -45,8 +45,9 @@ def print_stories_by_car(cars: list, drivers: list):
         cars=cars,
         message='Введите номер автомобиля для печати истории'
     )
-    index = cars.index(car)
-    menu.print_stories_by_car(drivers, index, car)
+    if car is not None:  # Если список автомобилей не пустой
+        index = cars.index(car)
+        menu.print_stories_by_car(drivers, index, car)
 
 
 def print_stories_by_driver(cars: list, drivers: list):
@@ -55,8 +56,9 @@ def print_stories_by_driver(cars: list, drivers: list):
         drivers=drivers,
         message='Введите номер водителя для добавления истории'
     )
-    index = drivers.index(driver)
-    menu.print_stories_by_driver(cars, index, driver)
+    if driver is not None:  # Если список водителей не пустой
+        index = drivers.index(driver)
+        menu.print_stories_by_driver(cars, index, driver)
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -70,6 +72,7 @@ def main():
                 break
             case 1:  # Сформировать новую базу данных
                 database = fill_database()
+                print('\nНовая база данных сформирована!')
                 cars = check_structure.get_list_by_key(database, CARS)  # Получаем список автомобилей
                 drivers = check_structure.get_list_by_key(database, DRIVERS)  # Получаем список водителей
             case 2:  # Печать автомобилей
@@ -103,7 +106,7 @@ def main():
             case _:
                 print('Неправильно введен номер пункта меню!')
         save_database_to_file(database)  # Сохраняем базу данных в json файл
-        input('Нажмите Enter для продолжения...')
+        _ = input('\nНажмите Enter для продолжения...')
 
 
 if __name__ == '__main__':

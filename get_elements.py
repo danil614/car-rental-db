@@ -63,7 +63,7 @@ def get_stories_by_car(drivers: list, car: dict) -> list:
     stories_by_car(drivers=drivers,
                    car=car,
                    operation=lambda _, story, driver: stories.append(
-                       dict(driver=driver, story=story)
+                       dict(story=story, driver=driver)
                    )  # Добавляем в список историй
                    )
     return stories

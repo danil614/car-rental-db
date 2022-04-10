@@ -1,7 +1,7 @@
 # Скрипт для вывода сообщений пользователю.
 
 import input_data  # Скрипт для ввода данных
-from keys import CAR, DRIVER, STORY  # Скрипт, в котором хранятся строковые ключи
+from keys import CAR, DRIVER, STORY, CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
 import get_elements  # Скрипт для получения элементов из базы данных
 
 
@@ -10,7 +10,7 @@ def get_menu_item() -> int:
     """
     Выводит меню и получает выбранный пункт.
     """
-    menu_text = '\n~~~~~~~~~~~~~~~~~~~~~~~~~~ МЕНЮ ~~~~~~~~~~~~~~~~~~~~~~~~~~\n' \
+    menu_text = '\n~~~~~~~~~~~~~~~~~~~ МЕНЮ ~~~~~~~~~~~~~~~~~~~\n' \
                 '1.  Сформировать новую базу данных\n' \
                 '2.  Печать автомобилей\n' \
                 '3.  Печать водителей\n' \
@@ -25,7 +25,8 @@ def get_menu_item() -> int:
                 '12. Удалить автомобиль\n' \
                 '13. Удалить водителя\n'\
                 '14. Удалить историю\n' \
-                '0.  Выход\n'
+                '0.  Выход\n' \
+                '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 
     print(menu_text)
     return input_data.get_int_number('Выберите пункт меню', 0)
@@ -98,7 +99,8 @@ def print_cars(cars: list):
     """
     Печатает таблицу автомобилей.
     """
-    print_cars_title()  # Печатаем заголовок таблицы
+    if not is_list_empty(cars, CARS):  # Если список не пустой
+        print_cars_title()  # Печатаем заголовок таблицы
     for index, car in enumerate(cars):
         print_car(index, car)  # Выводим строку таблицы
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,7 +133,8 @@ def print_drivers(drivers: list):
     """
     Печатает таблицу водителей.
     """
-    print_drivers_title()  # Печатаем заголовок таблицы
+    if not is_list_empty(drivers, DRIVERS):  # Если список не пустой
+        print_drivers_title()  # Печатаем заголовок таблицы
     for index, driver in enumerate(drivers):
         print_driver(index, driver)  # Выводим строку таблицы
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,9 +195,10 @@ def print_stories_by_drivers(cars: list, drivers: list):
     """
     Печатает таблицу водителей с историями.
     """
+    is_list_empty(drivers, DRIVERS)
     for index, driver in enumerate(drivers):
         print_stories_by_driver(cars, index, driver)
-        print('\n****************************************************************')
+        print('\n****************************************************************************************')
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -229,8 +233,8 @@ def print_stories_with_drivers(stories: list):
     Печатает строки для таблицы историй.
     """
     print_stories_with_drivers_title()  # Печатаем заголовок таблицы историй
-    for index, (story, driver) in enumerate(stories):
-        print_story_with_driver(index, story, driver)  # Выводим строку таблицы
+    for index, item in enumerate(stories):
+        print_story_with_driver(index, item['story'], item['driver'])  # Выводим строку таблицы
 
 
 def print_stories_by_car(drivers: list, index_car: int, car: dict):
@@ -252,7 +256,8 @@ def print_stories_by_cars(cars: list, drivers: list):
     """
     Печатает таблицу автомобилей с историями.
     """
+    is_list_empty(cars, CARS)
     for index, car in enumerate(cars):
         print_stories_by_car(drivers, index, car)
-        print('\n**********************************************************************')
+        print('\n****************************************************************************************')
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

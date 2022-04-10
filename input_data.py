@@ -30,7 +30,7 @@ def get_date(message: str) -> datetime:
     """
     date = datetime.date.min
     correct = False
-    print('------ ' + message + ' ------')
+    print('\n------ ' + message + ' ------')
 
     while not correct:
         try:
@@ -55,7 +55,7 @@ def get_and_check_date_rent():
     correct = False
 
     while not correct:
-        start_date_rent = get_date('\nВведите дату начала аренды')
+        start_date_rent = get_date('Введите дату начала аренды')
         end_date_rent = get_date('Введите дату окончания аренды')
 
         if start_date_rent > end_date_rent:  # Проверка дат
