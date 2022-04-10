@@ -62,7 +62,8 @@ def add_story(cars: list, drivers: list):
 
         stories = driver[DRIVER.STORIES]  # Получаем истории водителя
         stories.append(story)  # Добавляем в список историй
-        menu.print_stories(stories)  # Выводим список историй
+        index_driver = drivers.index(driver)  # Получаем индекс водителя
+        menu.print_stories_by_driver(cars, index_driver, driver)  # Выводим список историй
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -79,9 +80,9 @@ def edit_car(cars: list):
 
     if car is not None:  # Если список автомобилей не пустой
         # Редактируем данные автомобиля
-        car[CAR.LICENSE_PLATE] = input('Введите номерной знак: '),
-        car[CAR.BRAND] = input('Введите марку: '),
-        car[CAR.MODEL] = input('Введите модель: '),
+        car[CAR.LICENSE_PLATE] = input('Введите номерной знак: ')
+        car[CAR.BRAND] = input('Введите марку: ')
+        car[CAR.MODEL] = input('Введите модель: ')
         car[CAR.MAINTENANCE_DATE] = input_data.get_date('Введите дату ТО')
         menu.print_cars(cars)  # Выводим автомобили
 
@@ -101,7 +102,7 @@ def edit_driver(drivers: list):
         menu.print_drivers(drivers)  # Выводим всех водителей
 
 
-def edit_story(drivers: list):
+def edit_story(cars: list, drivers: list):
     """
     Изменяет историю в списке историй по выбранному водителю.
     """
@@ -116,6 +117,7 @@ def edit_story(drivers: list):
         # Просим пользователя выбрать историю
         story = get_elements.get_selected_story(
             stories=stories,
+            cars=cars,
             message='Введите номер истории для редактирования'
         )
 
@@ -124,7 +126,9 @@ def edit_story(drivers: list):
             start_date_rent, end_date_rent = input_data.get_and_check_date_rent()
             story[STORY.START_DATE_RENT] = start_date_rent
             story[STORY.END_DATE_RENT] = end_date_rent
-            menu.print_stories(stories)  # Выводим список историй
+
+            index_driver = drivers.index(driver)  # Получаем индекс водителя
+            menu.print_stories_by_driver(cars, index_driver, driver)  # Выводим список историй
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -161,7 +165,7 @@ def delete_driver(drivers: list):
         menu.print_drivers(drivers)  # Выводим всех водителей
 
 
-def delete_story(drivers: list):
+def delete_story(cars: list, drivers: list):
     """
     Удаляет историю по водителю.
     """
@@ -176,10 +180,13 @@ def delete_story(drivers: list):
         # Просим пользователя выбрать историю
         story = get_elements.get_selected_story(
             stories=stories,
+            cars=cars,
             message='Введите номер истории для удаления'
         )
 
         if story is not None:  # Если список историй не пустой
             stories.remove(story)  # Удаляем выбранную историю
-            menu.print_stories(stories)  # Выводим список историй
+
+            index_driver = drivers.index(driver)  # Получаем индекс водителя
+            menu.print_stories_by_driver(cars, index_driver, driver)  # Выводим список историй
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

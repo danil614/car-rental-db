@@ -6,8 +6,10 @@ import json_files  # Скрипт для работы с json файлами
 import menu  # Скрипт для вывода сообщений
 from keys import CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
 import check_structure  # Скрипт для проверки структуры базы данных
+import get_elements  # Скрипт для получения элементов из базы данных
 
 
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 def download_database_from_file() -> dict:
     """
     Загружает базу данных из json файла.
@@ -33,6 +35,29 @@ def save_database_to_file(database: dict):
     else:
         message = '\nБаза данных успешно сохранена в файл!'
     print(message)
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+def print_stories_by_car(cars: list, drivers: list):
+    # Просим пользователя выбрать автомобиль
+    car = get_elements.get_selected_car(
+        cars=cars,
+        message='Введите номер автомобиля для печати истории'
+    )
+    index = cars.index(car)
+    menu.print_stories_by_car(drivers, index, car)
+
+
+def print_stories_by_driver(cars: list, drivers: list):
+    # Просим пользователя выбрать водителя
+    driver = get_elements.get_selected_driver(
+        drivers=drivers,
+        message='Введите номер водителя для добавления истории'
+    )
+    index = drivers.index(driver)
+    menu.print_stories_by_driver(cars, index, driver)
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 def main():
@@ -54,9 +79,9 @@ def main():
                 if not menu.is_list_empty(drivers, DRIVERS):
                     menu.print_drivers(drivers)
             case 4:  # Печать историй по автомобилю
-                menu.print_stories_by_cars(cars, drivers)
+                print_stories_by_car(cars, drivers)
             case 5:  # Печать историй по водителю
-                menu.print_stories_by_drivers(drivers)
+                print_stories_by_driver(cars, drivers)
             case 6:  # Добавить автомобиль
                 operations.add_car(cars)
             case 7:  # Добавить водителя
@@ -68,13 +93,13 @@ def main():
             case 10:  # Изменить водителя
                 operations.edit_driver(drivers)
             case 11:  # Изменить историю
-                operations.edit_story(drivers)
+                operations.edit_story(cars, drivers)
             case 12:  # Удалить автомобиль
                 operations.delete_car(cars, drivers)
             case 13:  # Удалить водителя
                 operations.delete_driver(drivers)
             case 14:  # Удалить историю
-                operations.delete_story(drivers)
+                operations.delete_story(cars, drivers)
             case _:
                 print('Неправильно введен номер пункта меню!')
         save_database_to_file(database)  # Сохраняем базу данных в json файл

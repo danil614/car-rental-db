@@ -21,6 +21,16 @@ def get_last_id(cars: list) -> int:
         id_number = -1
 
     return id_number
+
+
+def get_car_by_id(cars: list, id_number: int) -> dict:
+    """
+    Возвращает автомобиль по id номеру.
+    """
+    searched_cars = list(filter(lambda item: item[CAR.ID] == id_number, cars))
+    return searched_cars[0]
+
+
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -42,7 +52,7 @@ def stories_by_car(drivers: list, car: dict, operation):
 
         for story in stories_by_driver.copy():  # Идем по копии списка для удаления
             if story[STORY.ID] == id_car:
-                operation(stories_by_driver, story)  # При совпадении id, выполняем функцию
+                operation(stories_by_driver, story, driver)  # При совпадении id, выполняем функцию
 
 
 def get_stories_by_car(drivers: list, car: dict) -> list:
@@ -52,7 +62,9 @@ def get_stories_by_car(drivers: list, car: dict) -> list:
     stories = []
     stories_by_car(drivers=drivers,
                    car=car,
-                   operation=lambda _, story: stories.append(story)  # Добавляем в список историй
+                   operation=lambda _, story, driver: stories.append(
+                       dict(driver=driver, story=story)
+                   )  # Добавляем в список историй
                    )
     return stories
 
@@ -63,13 +75,19 @@ def delete_stories_by_car(drivers: list, car: dict):
     """
     stories_by_car(drivers=drivers,
                    car=car,
-                   operation=lambda stories_by_driver, story: stories_by_driver.remove(story)  # Удаляем историю
+                   operation=lambda stories_by_driver, story, _: stories_by_driver.remove(story)  # Удаляем историю
                    )
+
+
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 # ///////////////////////////////////////////// Выбор элементов из списка //////////////////////////////////////////////
-def get_selected_dictionary_in_list(input_list: list, name_list: str, message: str, print_function) -> (dict, None):
+def get_selected_dictionary_in_list(input_list: list,
+                                    name_list: str,
+                                    message: str,
+                                    print_function,
+                                    cars: list = None) -> (dict, None):
     """
     Выводит список и возвращает выбранный словарь.
 
@@ -81,13 +99,19 @@ def get_selected_dictionary_in_list(input_list: list, name_list: str, message: s
 
     :param print_function: Функция печати
 
+    :param cars: Список автомобилей, нужен для вывода историй
+
     :return: Выбранный словарь
     """
     if menu.is_list_empty(input_list, name_list):  # Проверяем список на пустоту
         return None
     else:
         # Выводим список
-        print_function(input_list)
+        if cars is None:
+            print_function(input_list)
+        else:
+            print_function(input_list, cars)
+
         # Просим пользователя выбрать элемент
         index = input_data.get_int_number('\n' + message, 1, len(input_list)) - 1
         # Получаем словарь по индексу
@@ -121,7 +145,7 @@ def get_selected_driver(drivers: list, message: str) -> (dict, None):
     return driver
 
 
-def get_selected_story(stories: list, message: str) -> (dict, None):
+def get_selected_story(stories: list, cars: list, message: str) -> (dict, None):
     """
     Выводит список историй и возвращает выбранную историю.
     """
@@ -129,7 +153,8 @@ def get_selected_story(stories: list, message: str) -> (dict, None):
         input_list=stories,
         name_list=DRIVER.STORIES,
         message=message,
-        print_function=menu.print_stories
+        print_function=menu.print_stories_with_cars,
+        cars=cars
     )
     return story
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
