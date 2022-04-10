@@ -1,5 +1,5 @@
 # Вариант 10. Аренда автомобилей.
-import create_elements
+
 import operations
 from create_elements import fill_database  # Скрипт для заполнения базы данных случайными значениями
 import input_data  # Скрипт для ввода данных
@@ -8,7 +8,8 @@ import menu  # Скрипт для вывода сообщений
 from keys import CAR, DRIVER, STORY, CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
 from pprint import pprint
 import get_elements  # Скрипт для получения элементов из базы данных
-import check_structure
+import check_structure  # Скрипт для проверки структуры базы данных
+
 
 def download_database_from_file() -> dict:
     """
@@ -39,9 +40,7 @@ def save_database_to_file(database: dict):
 
 def main():
     database = download_database_from_file()  # Загружаем базу данных из json файла
-    # cars = get_elements.get_list_by_key(database, CARS)  # Получаем список автомобилей
-    # drivers = get_elements.get_list_by_key(database, DRIVERS)  # Получаем список водителей
-    cars, drivers = check_structure.main(database)
+    cars, drivers = check_structure.main(database)  # Проверяем и исправляем структуру базы данных
 
     while True:
         match menu.get_menu_item():
@@ -60,7 +59,7 @@ def main():
                     index = menu.get_car_index(cars)  # Спрашиваем у пользователя индекс автомобиля
                     car = cars[index]  # Получаем автомобиль по индексу
 
-                    id_car = get_elements.get_car_id(cars, index)  # Получаем id автомобиля по индексу
+                    id_car = get_elements.get_car_id_by_index(cars, index)  # Получаем id автомобиля по индексу
                     stories = get_elements.get_stories_by_car_id(drivers, id_car)  # Получаем истории по автомобилю
 
                     menu.print_stories_by_car(index, car, stories)  # Выводим все истории автомобиля
@@ -82,6 +81,18 @@ def main():
                     stories = get_elements.get_stories_by_driver_index(drivers, index)  # Получаем истории по водителю
                     operations.add_story(cars, stories)
                     # Печать историй по водителю ------------------------------------------------------------
+            case 9:  # Изменить автомобиль
+                pass
+            case 10:  # Изменить водителя
+                pass
+            case 11:  # Изменить историю
+                pass
+            case 12:  # Удалить автомобиль
+                operations.delete_car(cars, drivers)
+            case 13:  # Удалить водителя
+                pass
+            case 14:  # Удалить историю
+                pass
             case _:
                 print('Неправильно введен номер пункта меню!')
         save_database_to_file(database)  # Сохраняем базу данных в json файл

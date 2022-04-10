@@ -40,19 +40,79 @@ def add_story(cars: list, stories: list) -> dict:
     """
     Добавляет новую историю в список историй водителя.
     """
-    # Просим пользователя выбрать автомобиль для добавления истории
-    car_index = menu.get_car_index(cars)
+    # Просим пользователя выбрать автомобиль для добавления истории -----------------------------
+    car = get_elements.get_selected_car(cars)
 
-    # Получаем и проверяем дату аренды
+    # Получаем и проверяем даты аренды
     start_date_rent, end_date_rent = input_data.get_and_check_date_rent()
 
     story = create_elements.create_story(
-        id_number=get_elements.get_car_id(cars, car_index),  # Получаем id по индексу списка
+        id_number=car[CAR.ID],  # Получаем id автомобиля --------------------------------------------------
         start_date_rent=start_date_rent,
         end_date_rent=end_date_rent
     )
     stories.append(story)  # Добавляем в список историй
     return story
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+# ////////////////////////////////////////////////// Изменение данных //////////////////////////////////////////////////
+def edit_car(cars: list) -> dict:
+    """
+    Изменяет автомобиль в списке автомобилей. ---------------------------------- проверка на пустоту
+    """
+    car = get_elements.get_selected_car(cars)  # Просим пользователя выбрать автомобиль
+    car[CAR.LICENSE_PLATE] = input('Введите номерной знак: '),
+    car[CAR.BRAND] = input('Введите марку: '),
+    car[CAR.MODEL] = input('Введите модель: '),
+    car[CAR.MAINTENANCE_DATE] = input_data.get_date('Введите дату ТО')
+    return car
+
+
+def edit_driver(drivers: list) -> dict:
+    """
+    Изменяет водителя в списке водителей. ---------------------------------- проверка на пустоту
+    """
+    driver = get_elements.get_selected_driver(drivers)  # Просим пользователя выбрать водителя
+    driver[DRIVER.NAME] = input('Введите ФИО водителя: ')
+    return driver
+
+
+def edit_story(cars: list, drivers: list):
+    """
+    Изменяет историю в списке историй по выбранному водителю. ---------------------------------- проверка на пустоту
+    """
+    driver = get_elements.get_selected_driver(drivers)  # Просим пользователя выбрать водителя
+    stories = driver[DRIVER.STORIES]  # Получаем истории водителя
+
+    if not menu.is_list_empty(stories, DRIVER.STORIES):
+        # Просим пользователя выбрать историю
+        story = get_elements.get_selected_story(stories)
+
+        # Получаем и проверяем даты аренды
+        start_date_rent, end_date_rent = input_data.get_and_check_date_rent()
+        story[STORY.START_DATE_RENT] = start_date_rent
+        story[STORY.END_DATE_RENT] = end_date_rent
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+# ////////////////////////////////////////////////// Удаление данных //////////////////////////////////////////////////
+def delete_car(cars: list, drivers: list):
+    car = get_elements.get_selected_car(cars)  # Просим пользователя выбрать автомобиль
+    delete_stories_by_car(drivers, car)  # Удаляем истории, в которых используется id выбранного автомобиля
+    cars.remove(car)  # Удаляем автомобиль из списка
+
+
+def delete_stories_by_car(drivers: list, car: dict):
+    id_car = car[CAR.ID]  # Получаем id автомобиля
+
+    for driver in drivers:
+        stories_by_driver = driver[DRIVER.STORIES]  # Получаем истории по водителю
+
+        for story in stories_by_driver.copy():  # Идем по копии списка для удаления
+            if story[STORY.ID] == id_car:
+                # Если id совпал, удаляем историю
+                stories_by_driver.remove(story)
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

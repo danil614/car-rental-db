@@ -21,8 +21,3 @@ class STORY:
     ID = 'id'
     START_DATE_RENT = 'Дата начала аренды'
     END_DATE_RENT = 'Дата окончания аренды'
-
-
-if __name__ == '__main__':
-    pass
-    # print(STORY.START_DATE_RENT)

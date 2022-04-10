@@ -5,19 +5,20 @@ from random import randint
 import values  # Скрипт для получения случайных значений полей базы данных
 from keys import CAR, DRIVER, STORY, CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
 
-# Количество автомобилей
+# Количество случайных автомобилей
 MIN_CARS_NUMBER = 5
 MAX_CARS_NUMBER = 10
 
-# Количество водителей
+# Количество случайных водителей
 MIN_DRIVERS_NUMBER = 5
 MAX_DRIVERS_NUMBER = 10
 
-# Количество историй аренды у водителя
+# Количество случайных историй аренды у водителя
 MIN_STORIES_NUMBER = 1
 MAX_STORIES_NUMBER = 5
 
 
+# ///////////////////////////////////////////////// Создание словарей //////////////////////////////////////////////////
 def create_car(id_number: int, license_plate: str, brand: str, model: str, maintenance_date: datetime) -> dict:
     """
     Создает словарь-автомобиль по входным данным.
@@ -56,11 +57,13 @@ def create_story(id_number: int, start_date_rent: datetime, end_date_rent: datet
     }
 
     return story
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+# ///////////////////////////////////////////// Создание случайных списков /////////////////////////////////////////////
 def get_random_cars(cars_number: int) -> list:
     """
-    Возвращает список автомобилей.
+    Возвращает список случайных автомобилей.
     """
     cars = []
 
@@ -80,6 +83,9 @@ def get_random_cars(cars_number: int) -> list:
 
 
 def get_random_stories(stories_number: int, last_id_number: int) -> list:
+    """
+    Возвращает список случайных историй.
+    """
     stories = []
 
     for i in range(stories_number):
@@ -97,7 +103,7 @@ def get_random_stories(stories_number: int, last_id_number: int) -> list:
 
 def get_random_drivers(drivers_number: int, cars_number: int) -> list:
     """
-    Возвращает список водителей.
+    Возвращает список случайных водителей.
     """
     drivers = []
 
@@ -114,8 +120,10 @@ def get_random_drivers(drivers_number: int, cars_number: int) -> list:
         drivers.append(driver)
 
     return drivers
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 def fill_database() -> dict:
     """
     Заполняет базу данных случайными значениями.
@@ -128,6 +136,7 @@ def fill_database() -> dict:
 
     car_rental = {CARS: cars, DRIVERS: drivers}
     return car_rental
+# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 if __name__ == '__main__':

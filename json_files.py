@@ -36,9 +36,3 @@ def get_data_from_json() -> dict:
         return {}
     except json.decoder.JSONDecodeError:  # Ошибка при декодировании json
         return {}
-
-
-if __name__ == '__main__':
-    pass
-    # print(get_data_from_json())
-    # print(save_json_file({'УРА!': 'ghbrjk@'}))
