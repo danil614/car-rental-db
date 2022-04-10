@@ -61,7 +61,7 @@ def get_license_plate() -> str:
     return license_plate
 
 
-def get_brand_and_model():
+def get_brand_and_model() -> (str, str):
     """
     Возвращает марку и модель автомобиля.
     """

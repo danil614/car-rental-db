@@ -46,7 +46,7 @@ def get_date(message: str) -> datetime:
     return date
 
 
-def get_and_check_date_rent():
+def get_and_check_date_rent() -> (datetime, datetime):
     """
     Запрашивает даты, и проверяет, что дата начала меньше даты конца.
     """

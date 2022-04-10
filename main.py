@@ -1,12 +1,13 @@
 # Вариант 10. Аренда автомобилей.
 
-import operations
+import operations  # Скрипт для выполнения операций с базой данных
 from create_elements import fill_database  # Скрипт для заполнения базы данных случайными значениями
 import json_files  # Скрипт для работы с json файлами
 import menu  # Скрипт для вывода сообщений
 from keys import CARS, DRIVERS  # Скрипт, в котором хранятся строковые ключи
 import check_structure  # Скрипт для проверки структуры базы данных
 import get_elements  # Скрипт для получения элементов из базы данных
+from undo_changes import catch_change, undo_change  # Скрипт для отмены внесенных изменений в базу данных
 
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,9 +66,12 @@ def print_stories_by_driver(cars: list, drivers: list):
 def main():
     database = download_database_from_file()  # Загружаем базу данных из json файла
     cars, drivers = check_structure.main(database)  # Проверяем и исправляем структуру базы данных
+    changes = []  # Список внесенных изменений
 
     while True:
-        match menu.get_menu_item():
+        menu_item = menu.get_menu_item()  # Просим пользователя выбрать пункт меню
+        changed_list, changed_item, old_item, old_stories = None, None, None, None  # Параметры изменения данных
+        match menu_item:
             case 0:  # Выход
                 break
             case 1:  # Сформировать новую базу данных
@@ -86,27 +90,30 @@ def main():
             case 5:  # Печать историй по водителю
                 print_stories_by_driver(cars, drivers)
             case 6:  # Добавить автомобиль
-                operations.add_car(cars)
+                changed_list, changed_item = operations.add_car(cars)
             case 7:  # Добавить водителя
-                operations.add_driver(drivers)
+                changed_list, changed_item = operations.add_driver(drivers)
             case 8:  # Добавить историю
-                operations.add_story(cars, drivers)
+                changed_list, changed_item = operations.add_story(cars, drivers)
             case 9:  # Изменить автомобиль
-                operations.edit_car(cars)
+                changed_list, changed_item, old_item = operations.edit_car(cars)
             case 10:  # Изменить водителя
-                operations.edit_driver(drivers)
+                changed_list, changed_item, old_item = operations.edit_driver(drivers)
             case 11:  # Изменить историю
-                operations.edit_story(cars, drivers)
+                changed_list, changed_item, old_item = operations.edit_story(cars, drivers)
             case 12:  # Удалить автомобиль
-                operations.delete_car(cars, drivers)
+                changed_list, changed_item, old_stories = operations.delete_car(cars, drivers)
             case 13:  # Удалить водителя
-                operations.delete_driver(drivers)
+                changed_list, changed_item = operations.delete_driver(drivers)
             case 14:  # Удалить историю
-                operations.delete_story(cars, drivers)
+                changed_list, changed_item = operations.delete_story(cars, drivers)
+            case 15:  # Отменить последнее изменение
+                undo_change(changes)
             case _:
                 print('Неправильно введен номер пункта меню!')
         save_database_to_file(database)  # Сохраняем базу данных в json файл
-        _ = input('\nНажмите Enter для продолжения...')
+        catch_change(menu_item, changed_list, changed_item, old_item, old_stories, changes)  # Ловим изменение
+        _ = input('\nНажмите Enter для продолжения... ')
 
 
 if __name__ == '__main__':

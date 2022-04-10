@@ -8,7 +8,7 @@ import get_elements  # Скрипт для получения элементов
 
 
 # ////////////////////////////////////////////// Добавление в базу данных //////////////////////////////////////////////
-def add_car(cars: list):
+def add_car(cars: list) -> (list, dict):
     """
     Добавляет новый автомобиль в список автомобилей.
     """
@@ -21,9 +21,10 @@ def add_car(cars: list):
     )
     cars.append(car)  # Добавляем в список автомобилей
     menu.print_cars(cars)  # Выводим автомобили
+    return cars, car
 
 
-def add_driver(drivers: list):
+def add_driver(drivers: list) -> (list, dict):
     """
     Добавляет нового водителя в список водителей.
     """
@@ -33,9 +34,10 @@ def add_driver(drivers: list):
     )
     drivers.append(driver)  # Добавляем в список водителей
     menu.print_drivers(drivers)  # Выводим всех водителей
+    return drivers, driver
 
 
-def add_story(cars: list, drivers: list):
+def add_story(cars: list, drivers: list) -> (list, dict):
     """
     Добавляет новую историю в список историй водителя.
     """
@@ -65,11 +67,15 @@ def add_story(cars: list, drivers: list):
             stories.append(story)  # Добавляем в список историй
             index_driver = drivers.index(driver)  # Получаем индекс водителя
             menu.print_stories_by_driver(cars, index_driver, driver)  # Выводим список историй
+            return stories, story
+
+    return None, None  # Если не получилось добавить
+
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 # ////////////////////////////////////////////////// Изменение данных //////////////////////////////////////////////////
-def edit_car(cars: list):
+def edit_car(cars: list) -> (list, dict, dict):
     """
     Изменяет автомобиль в списке автомобилей.
     """
@@ -78,6 +84,7 @@ def edit_car(cars: list):
         cars=cars,
         message='Введите номер автомобиля для редактирования'
     )
+    old_car = car.copy()  # Делаем копию автомобиля
 
     if car is not None:  # Если список автомобилей не пустой
         # Редактируем данные автомобиля
@@ -86,9 +93,12 @@ def edit_car(cars: list):
         car[CAR.MODEL] = input('Введите модель: ')
         car[CAR.MAINTENANCE_DATE] = input_data.get_date('Введите дату ТО').isoformat()  # Преобразуем дату в строку
         menu.print_cars(cars)  # Выводим автомобили
+        return cars, car, old_car
+
+    return None, None, None  # Если не получилось добавить
 
 
-def edit_driver(drivers: list):
+def edit_driver(drivers: list) -> (list, dict, dict):
     """
     Изменяет водителя в списке водителей.
     """
@@ -97,13 +107,17 @@ def edit_driver(drivers: list):
         drivers=drivers,
         message='Введите номер водителя для редактирования'
     )
+    old_driver = driver.copy()
 
     if driver is not None:  # Если список водителей не пустой
         driver[DRIVER.NAME] = input('Введите ФИО водителя: ')  # Редактируем ФИО водителя
         menu.print_drivers(drivers)  # Выводим всех водителей
+        return drivers, driver, old_driver
+
+    return None, None, None  # Если не получилось добавить
 
 
-def edit_story(cars: list, drivers: list):
+def edit_story(cars: list, drivers: list) -> (list, dict, dict):
     """
     Изменяет историю в списке историй по выбранному водителю.
     """
@@ -121,6 +135,7 @@ def edit_story(cars: list, drivers: list):
             cars=cars,
             message='Введите номер истории для редактирования'
         )
+        old_story = story.copy()
 
         if story is not None:  # Если список историй не пустой
             # Получаем и проверяем даты аренды
@@ -130,11 +145,14 @@ def edit_story(cars: list, drivers: list):
 
             index_driver = drivers.index(driver)  # Получаем индекс водителя
             menu.print_stories_by_driver(cars, index_driver, driver)  # Выводим список историй
+            return stories, story, old_story
+
+    return None, None, None  # Если не получилось добавить
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 # ////////////////////////////////////////////////// Удаление данных //////////////////////////////////////////////////
-def delete_car(cars: list, drivers: list):
+def delete_car(cars: list, drivers: list) -> (list, dict, list):
     """
     Удаляет водителя из списка водителей, а также связанные с ним истории.
     """
@@ -145,13 +163,18 @@ def delete_car(cars: list, drivers: list):
     )
 
     if car is not None:  # Если список автомобилей не пустой
+        old_stories = get_elements.get_stories_by_car(drivers, car)  # Получаем истории, которые будут удалены
+
         # Удаляем истории, в которых используется id выбранного автомобиля
         get_elements.delete_stories_by_car(drivers, car)
         cars.remove(car)  # Удаляем автомобиль из списка
         menu.print_stories_by_cars(cars, drivers)  # Выводим все автомобили с их историями
+        return cars, car, old_stories
+
+    return None, None, None  # Если не получилось добавить
 
 
-def delete_driver(drivers: list):
+def delete_driver(drivers: list) -> (list, dict):
     """
     Удаляет водителя из списка водителей.
     """
@@ -164,9 +187,12 @@ def delete_driver(drivers: list):
     if driver is not None:  # Если список водителей не пустой
         drivers.remove(driver)  # Удаляем водителя из списка
         menu.print_drivers(drivers)  # Выводим всех водителей
+        return drivers, driver
+
+    return None, None  # Если не получилось добавить
 
 
-def delete_story(cars: list, drivers: list):
+def delete_story(cars: list, drivers: list) -> (list, dict):
     """
     Удаляет историю по водителю.
     """
@@ -190,4 +216,7 @@ def delete_story(cars: list, drivers: list):
 
             index_driver = drivers.index(driver)  # Получаем индекс водителя
             menu.print_stories_by_driver(cars, index_driver, driver)  # Выводим список историй
+            return stories, story
+
+    return None, None  # Если не получилось добавить
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

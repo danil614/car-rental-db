@@ -28,7 +28,11 @@ def get_car_by_id(cars: list, id_number: int) -> dict:
     Возвращает автомобиль по id номеру.
     """
     searched_cars = list(filter(lambda item: item[CAR.ID] == id_number, cars))
-    return searched_cars[0]
+
+    try:
+        return searched_cars[0]
+    except IndexError:
+        return {}
 
 
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,9 +44,7 @@ def stories_by_car(drivers: list, car: dict, operation):
     Перебирает все истории и выполняет действие при совпадении id.
 
     :param drivers: Список водителей
-
     :param car: Автомобиль
-
     :param operation: Действие с историей
     """
     id_car = car[CAR.ID]  # Получаем id автомобиля
@@ -87,20 +89,15 @@ def get_selected_dictionary_in_list(input_list: list,
                                     name_list: str,
                                     message: str,
                                     print_function,
-                                    cars: list = None) -> (dict, None):
+                                    cars: list = None) -> (dict | None):
     """
     Выводит список и возвращает выбранный словарь.
 
     :param input_list: Список для печати и выбора из него
-
     :param name_list: Название списка
-
     :param message: Сообщения для выбора из списка
-
     :param print_function: Функция печати
-
     :param cars: Список автомобилей, нужен для вывода историй
-
     :return: Выбранный словарь
     """
     if menu.is_list_empty(input_list, name_list):  # Проверяем список на пустоту
@@ -119,7 +116,7 @@ def get_selected_dictionary_in_list(input_list: list,
         return dictionary
 
 
-def get_selected_car(cars: list, message: str) -> (dict, None):
+def get_selected_car(cars: list, message: str) -> (dict | None):
     """
     Выводит список автомобилей и возвращает выбранный автомобиль.
     """
@@ -132,7 +129,7 @@ def get_selected_car(cars: list, message: str) -> (dict, None):
     return car
 
 
-def get_selected_driver(drivers: list, message: str) -> (dict, None):
+def get_selected_driver(drivers: list, message: str) -> (dict | None):
     """
     Выводит список водителей и возвращает выбранного водителя.
     """
@@ -145,7 +142,7 @@ def get_selected_driver(drivers: list, message: str) -> (dict, None):
     return driver
 
 
-def get_selected_story(stories: list, cars: list, message: str) -> (dict, None):
+def get_selected_story(stories: list, cars: list, message: str) -> (dict | None):
     """
     Выводит список историй и возвращает выбранную историю.
     """

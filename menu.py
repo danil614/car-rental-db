@@ -25,6 +25,7 @@ def get_menu_item() -> int:
                 '12. Удалить автомобиль\n' \
                 '13. Удалить водителя\n'\
                 '14. Удалить историю\n' \
+                '15. Отменить последнее изменение\n' \
                 '0.  Выход\n' \
                 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 
@@ -57,6 +58,13 @@ def print_separator(title: str):
         # По количеству символов заголовка будем составлять разделитель
         separator += '-'
     print('|' + separator[1:-1] + '|')
+
+
+def get_spaces(number: int):
+    spaces = ''
+    for _ in range(number):
+        spaces += ' '
+    return spaces
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -80,10 +88,13 @@ def print_cars_title():
 
 
 def get_car_string(car: dict):
-    car_string = f'{car[CAR.LICENSE_PLATE]:^16}|' \
-                 f' {car[CAR.BRAND]:<12}|' \
-                 f' {car[CAR.MODEL]:<12}|' \
-                 f'{car[CAR.MAINTENANCE_DATE]:^14}|'
+    try:
+        car_string = f'{car[CAR.LICENSE_PLATE]:^16}|' \
+                     f' {car[CAR.BRAND]:<12}|' \
+                     f' {car[CAR.MODEL]:<12}|' \
+                     f'{car[CAR.MAINTENANCE_DATE]:^14}|'
+    except KeyError:  # Ключ не найден
+        car_string = get_spaces(59) + '|'
     return car_string
 
 
